@@ -88,26 +88,24 @@ ORDER BY SPLIT_PART(duration, ' ', 1)::INT DESC;
 	 from netflix
 	 group by 1;
 
-/*10.Find each year and the average numbers of content release in India on netflix. 
-return top 5 year with highest avg content release!*/
---11. List all movies that are documentaries
+--10. List all movies that are documentaries
 select * from netflix
        select type, listed_in, title from netflix
 	   where type like'Movie' and listed_in like 'Documentaries';
 
---12. Find all content without a director
+--11. Find all content without a director
 
      select * from netflix
 	 where director is null;
 	 
---13. Find how many movies actor 'Salman Khan' appeared in last 10 years!
+--12. Find how many movies actor 'Salman Khan' appeared in last 10 years!
 
       select title, casts from netflix
 	  where casts like'%Salman Khan%' 
 	  and date_added >= CURRENT_DATE - INTERVAL '10 years';
 
 
---14. Find the top 10 actors who have appeared in the highest number of movies produced in India.
+--13. Find the top 10 actors who have appeared in the highest number of movies produced in India.
 
     SELECT 
 	UNNEST(STRING_TO_ARRAY(casts, ',')) as actor,
@@ -117,4 +115,5 @@ WHERE country = 'India'
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 10;
+
 
