@@ -67,21 +67,37 @@ OR
 ```
 ###4. Find the top 5 countries with the most content on Netflix
 ```sql
-
+    select
+		unnest(STRING_TO_ARRAY(country, ',')) as country,
+		count(*) as total_content
+	from netflix
+	group by 1
+	order by 2 desc
+	limit 5;
 ```
 ###5. Identify the longest movie
 
 ```sql
-
+  select
+	title, duration
+from netflix
+where type = 'Movie'
+order by SPLIT_PART(duration, ' ', 1)::INT DESC
 ```
 ###6. Find content added in the last 5 years
 
 ```sql
+    select type, title, date_added from netflix
+where date_added >= Current_date- interval '5 years';
 ```
 ###7. Find all the movies/TV shows by director 'Rajiv Chilaka'!
 
 ```sql
-
+       select type, title, director from netflix
+  where director = 'Rajiv Chilaka';
+OR
+  select type, title, director from netflix
+     where director like 'Rajiv Chilaka';
 ```
 
 ###8. List all TV shows with more than 5 seasons
@@ -99,30 +115,26 @@ select
 	 from netflix
 	 group by 1;
 ```
-###10.Find each year and the average numbers of content release in India on netflix.return top 5 year with highest avg content release!
 
-```sql
-
-```
-###11. List all movies that are documentaries
+###10. List all movies that are documentaries
 
 ```sql
 select type, listed_in, title from netflix
 	   where type like'Movie' and listed_in like 'Documentaries';
 ```
-###12. Find all content without a director
+###11. Find all content without a director
 ```sql
 select * from netflix
 	 where director is null;
 ```
-###13. Find how many movies actor 'Salman Khan' appeared in last 10 years!
+###12. Find how many movies actor 'Salman Khan' appeared in last 10 years!
 
 ```sql
 select title, casts from netflix
 	  where casts like'%Salman Khan%' 
 	  and date_added >= CURRENT_DATE - INTERVAL '10 years';
 ```
-###14. Find the top 10 actors who have appeared in the highest number of movies produced in India.
+###13. Find the top 10 actors who have appeared in the highest number of movies produced in India.
 ```sql
  SELECT 
 	UNNEST(STRING_TO_ARRAY(casts, ',')) as actor,
